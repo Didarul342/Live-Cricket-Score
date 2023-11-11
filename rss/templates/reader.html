@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block head %}
+    <title>Live Score</title>
+    <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <link href="{% static 'css/app.css' %}" rel="stylesheet" />
+
+{% endblock %}
+{% block styleBlock %}
+    <style>
+        .heading {
+            margin-left: 25%;
+            font-size: 200%;
+            background: #314569;
+            width: 50%;
+            text-align: center;
+            color: white;
+        }
+
+        .details {
+            width: 60%;
+            border: 1px solid #ccc !important;
+            margin-left: 20%;
+            margin-bottom: 2%;
+            border-radius: 4%;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: Verdana, sans-serif;
+            margin: 0
+        }
+
+        .mySlides {
+            display: none
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* Next & previous buttons */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: 60px;
+            color: #e61414;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            margin-left: 22%;
+            margin-right: 22%;
+        }
+
+        /* Position the "next button" to the right */
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover, .next:hover {
+            background-color: #eee;
+        }
+
+        /* Caption text */
+        .text {
+            color: #f2f2f2;
+            font-size: 15px;
+            padding: 8px 12px;
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Number text (1/3 etc) */
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+
+        /* The dots/bullets/indicators */
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+
+        /* Fading animation */
+        .fade {
+            -webkit-animation-name: fade;
+            -webkit-animation-duration: 1.5s;
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        @-webkit-keyframes fade {
+            from {
+                opacity: .4
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes fade {
+            from {
+                opacity: .4
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        /* On smaller screens, decrease text size */
+        @media only screen and (max-width: 300px) {
+            .prev, .next, .text {
+                font-size: 11px
+            }
+        }
+
+        p, h4 {
+            font-family: "Times New Roman", Times, serif;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="">
+        <div>
+            <p class="heading">Live Score</p>
+        </div>
+    </div>
+    {#    <div class="live_score">#}
+    {#        {% for rec in feed.entries %}#}
+    {#        <form id="myForm" action="{% url 'rss:info' %}" method="post" enctype="multipart/form-data">#}
+    {#         #}
+    {#            <h4 id="txt_link-{{ forloop.counter }}" >{{ rec.title }}</h4>#}
+    {#            <a id='tc_review-{{ forloop.counter }}' class="fa-times"  href="javascript:void(0)">details</a>#}
+    {#            <input type="hidden" id="link_id" name="link" value="{{ rec.link }}">#}
+    {#        </form>#}
+    {#        {% endfor %}#}
+    {#    </div>#}
+    <div class="live_score" id="live_score">
+        {% for rec in data.data %}
+            <div class="slideshow-container" id="slideshow-container">
+                <div class="mySlides fade">
+                    <div class="details">
+                        <form id="myForm" action="{% url 'rss:info' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% if rec.date == 'MATCH DELAYED BY RAIN' %}
+                                <canvas class="rainCanvas" width="588" height="230">Canvas Not Supported! Please
+                                    Update Your Browser to the Latest Version.
+                                </canvas>
+                                <div class="flashDiv"></div>
+                                <img id="raindrop1" src="{% static 'image/raindrop1.png' %}" width="0" height="0">
+                                <img id="raindrop2" src="{% static 'image/raindrop2.png' %}" width="0" height="0">
+                                <img id="raindrop3" src="{% static 'image/raindrop3.png' %}" width="0" height="0">
+                            {% endif %}
+                            <h4 style="color: red; margin-left: 5%; ">{{ rec.date }}</h4>
+                            <p style=" margin-left: 5%;">{{ rec.title }}</p>
+                            <p style="margin-left: 5%;">{{ rec.note }}</p>
+                            {% for i in rec.teams %}
+                                <img src="{{ i.image }}" style="position: absolute; margin-left: 1%; ">
+
+                                <h4 style="margin-left: 9%; margin-top: 2%;">{{ i.team_name }}</h4>
+                                <p style="position: absolute;margin-left: 24%; margin-top: -3%;">{{ i.score }}</p>
+                                {#                        <h4>{{ i.over }}</h4>#}
+                            {% endfor %}
+                            <a id='tc_review-{{ forloop.counter }}' class="fa-times1"
+                               style="margin-left: 5%; color: red; content: none; margin-left: 80%;"
+                               href="javascript:void(0)">Live Score</a>
+                            <input type="hidden" id="link_{{ forloop.counter }}" name="link1" value="{{ rec.urls }}">
+                            <input type="hidden" id="link_id" name="link" value="{{ rec.urls }}">
+                            <input type="hidden" id="teams_id" name="teams" value="{{ rec.teams }}">
+                            <input type="hidden" id="teams_{{ forloop.counter }}" name="teams1" value="{{ rec.teams }}">
+                            <input type="hidden" id="date_id" name="date" value="{{ rec.date }}">
+                            <input type="hidden" id="date_{{ forloop.counter }}" name="date1" value="{{ rec.date }}">
+                            <input type="hidden" id="title_id" name="title" value="{{ rec.title }}">
+                            <input type="hidden" id="title_{{ forloop.counter }}" name="title1" value="{{ rec.title }}">
+                            <input type="hidden" id="note_id" name="note" value="{{ rec.note }}">
+                            <input type="hidden" id="note_{{ forloop.counter }}" name="note1" value="{{ rec.note }}">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="data">
+
+    </div>
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+        <span class="dot" onclick="currentSlide(5)"></span>
+        <span class="dot" onclick="currentSlide(6)"></span>
+        <span class="dot" onclick="currentSlide(7)"></span>
+        <span class="dot" onclick="currentSlide(8)"></span>
+        <span class="dot" onclick="currentSlide(9)"></span>
+        <span class="dot" onclick="currentSlide(10)"></span>
+    </div>
+{% endblock %}
+{% block ScriptBlock %}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script>
+
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+
+        $(document).ready(function () {
+
+            $(document).on('click', '.fa-times1', function (e) {
+                var image_id = event.srcElement.id.split('-')[1];
+                var link = $("#link_" + image_id).val();
+                var date = $("#date_" + image_id).val();
+                var teams = $("#teams_" + image_id).val();
+                var title = $("#title_" + image_id).val();
+                var note = $("#note_" + image_id).val();
+                $("#link_id").val(link);
+                $("#date_id").val(date);
+                $("#teams_id").val(teams);
+                $("#title_id").val(title);
+                $("#note_id").val(note);
+                document.getElementById('myForm').submit();
+            });
+        });
+        {#window.setTimeout(function () {#}
+        {#    location.href = "/rss/";#}
+        {#, 10000);#}
+
+
+        {#var append_increment = 0;#}
+        {#setInterval(function () {#}
+        {#    $.ajax({#}
+        {#        type: "POST",#}
+        {#        url: {% url 'rss:index' %},  // URL to your view that serves new info#}
+        {#        data: {'append_increment': append_increment,'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()}#}
+        {#    })#}
+        {#        .done(function (data) {#}
+        {#            data = JSON.parse(data);#}
+        {#            console.log(data);#}
+        {#            $('#live_score').append(data);#}
+        {#            append_increment += 10;#}
+        {#        });#}
+        {#, 10000)#}
+    </script>
+{% endblock %}

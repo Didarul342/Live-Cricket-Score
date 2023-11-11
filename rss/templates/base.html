@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+
+    <meta charset="UTF-8">
+    {#   #}
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% block head %}
+
+    {% endblock %}
+    <style>
+        body {
+            background: #eee;
+        }
+
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Lato", sans-serif
+        }
+
+        .w3-bar, h1, button {
+            font-family: "Montserrat", sans-serif
+        }
+
+        .fa-anchor, .fa-coffee {
+            font-size: 200px
+        }
+
+        {#.title{#}
+        {#    background-image:url("/static/image/cwc-default-thumbnail.png") ;#}
+        {##}
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+
+        .dropdown .dropbtn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+
+        .navbar a:hover, .dropdown:hover .dropbtn {
+            background-color: white;
+            color: black;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            width: 125px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 5px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+    {% block styleBlock %}
+
+    {% endblock %}
+</head>
+<body>
+
+<div class="w3-top">
+    <div class="w3-bar w3-red w3-card w3-left-align w3-large" style="background-color: #314569!important;">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red"
+           href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i
+                class="fa fa-bars"></i></a>
+        <a href="/rss/" class="w3-bar-item w3-button w3-padding-large w3-white">Live Matches</a>
+        {#        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Live Score</a>#}
+        <a href="/schedule/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Schedule</a>
+        <div class="dropdown">
+            <button class="dropbtn" style="padding: 14px 22px;">Ranking
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/batting_ranking/" style="font-size: 80%;">Batting</a>
+                <a href="/bowling_ranking/" style="font-size: 80%;">Bowling</a>
+                <a href="/all_rounder_ranking/" style="font-size: 80%;">All-rounders</a>
+                <a href="/team_ranking/" style="font-size: 80%;">Teams</a>
+            </div>
+        </div>
+{#        <a href="/schedule/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Ranking</a>#}
+        <a href="/about/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">About</a>
+        {#        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"></a>#}
+    </div>
+
+    <!-- Navbar on small screens -->
+    <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 4</a>
+    </div>
+</div>
+
+
+<!-- Header -->
+<header class="w3-container w3-red w3-center title" style="padding:30px 16px;background-color: #314569!important; ">
+    <h1 class="w3-margin w3-jumbo">Live Cricket Score</h1>
+    {#    <p class="w3-xlarge">Template by w3.css</p>#}
+    {#    <button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">Get Started</button>#}
+</header>
+{% block content %}
+
+{% endblock %}
+
+
+
+{% block body %}
+{% endblock %}
+
+
+
+<section id="d_footer">
+    <footer class="w3-container w3-padding-64 w3-center w3-opacity" style="background: #868682;">
+        <div class="w3-xlarge w3-padding-32">
+            <i class="fa fa-facebook-official w3-hover-opacity"></i>
+            <i class="fa fa-instagram w3-hover-opacity"></i>
+            <i class="fa fa-snapchat w3-hover-opacity"></i>
+            <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+            <i class="fa fa-twitter w3-hover-opacity"></i>
+            <i class="fa fa-linkedin w3-hover-opacity"></i>
+        </div>
+        <p>Powered by <a href="https://www.lcs.com" target="_blank">Cricket Live</a></p>
+
+    </footer>
+</section>
+<script>
+
+</script>
+{% block ScriptBlock %}
+
+{% endblock %}
+</body>
+</html>

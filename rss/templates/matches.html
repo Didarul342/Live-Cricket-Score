@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block styleBlock %}
+    <style>
+        .heading {
+            margin-left: 25%;
+            font-size: 200%;
+            background: #314569;
+            width: 50%;
+            text-align: center;
+            color: white;
+        }
+
+        .details {
+            width: 60%;
+            border: 1px solid #ccc !important;
+            margin-left: 20%;
+            margin-bottom: 2%;
+            border-radius: 4%;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+
+
+    {% if data.fixtures_list %}
+        <div class="">
+            <div>
+                <p class="heading">Upcoming Matches</p>
+            </div>
+        </div>
+        {% for i in data.fixtures_list %}
+            <div class="details">
+                <h4 style="color: red; margin-left: 5%; ">{{ i.span }}</h4>
+                <p style="margin-left: 5%; "></p>
+                <p style=" margin-left: 5%;">{{ i.date }} --> {{ i.overview }}</p>
+                {% if not i.image_first  == 'https://a.espncdn.com/i/teamlogos/soccer/500/default-team-logo-500.png' %}
+                    <img src="{{ i.image_first }}" style="position: absolute; margin-left: 1%;" onerror=this.src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=35&w=35">
+                    {#                {% else %}#}
+                    {#                    <img src="{% static 'image/default-team-logo-5.xcf' %}" style="position: absolute; margin-left: 1%;">#}
+                {% endif %}
+                <p style="margin-left: 10%;">{{ i.team_first }}</p>
+                {% if not i.image_second  == 'https://a.espncdn.com/i/teamlogos/soccer/500/default-team-logo-500.png' %}
+                    <img src="{{ i.image_second }}" style="position: absolute; margin-left: 1%;" onerror=this.src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=35&w=35">
+                {% endif %}
+                <p style="margin-left: 10%;">{{ i.team_second }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if data.results_list %}
+        <div class="">
+            <div>
+                <p class="heading">Previous Matches</p>
+            </div>
+        </div>
+        {% for i in data.results_list %}
+            <div class="details">
+                <h4 style="color: red; margin-left: 5%; ">{{ i.span }}</h4>
+                <p style=" margin-left: 5%;">{{ i.overview }}</p>
+                {% if not i.image_first  == 'https://a.espncdn.com/i/teamlogos/soccer/500/default-team-logo-500.png' %}
+                    <img src="{{ i.image_first }}" style="position: absolute; margin-left: 1%;">
+                    {#                {% else %}#}
+                    {#                    <img src="{% static 'image/default-team-logo-5.xcf' %}" style="position: absolute; margin-left: 1%;">#}
+                {% endif %}
+                <p style="margin-left: 10%;">{{ i.team_first }}</p>
+                {% if i.score_first %}
+                    <p style="margin-left: 35%;margin-top: -5%;">{{ i.score_first }}</p>
+                {% endif %}
+                {% if not i.image_second  == 'https://a.espncdn.com/i/teamlogos/soccer/500/default-team-logo-500.png' %}
+                    <img src="{{ i.image_second }}" style="position: absolute; margin-left: 1%;">
+                {% endif %}
+                <p style="margin-left: 10%;">{{ i.team_second }}</p>
+                {% if i.score_second %}
+                    <p style="margin-left: 35%; margin-top: -4%;">{{ i.score_second }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if data.team_matches_list %}
+        <div class="">
+            <div>
+                <p class="heading">Upcoming Matches</p>
+            </div>
+        </div>
+        {% if data.top %}
+            <div class="details">
+                <h4 style="margin-left: 5%; color: red;">{{ data.top }}</h4>
+            </div>
+        {% endif %}
+        {% for i in data.team_matches_list %}
+            <div class="details">
+                <h4 style="color: red; margin-left: 5%; ">{{ i.span }}</h4>
+                <p style=" margin-left: 5%;">{{ i.overview }}</p>
+                {% if not i.image_first  == 'https://a.espncdn.com/i/teamlogos/soccer/500/default-team-logo-500.png' %}
+                    <img src="{{ i.image_first }}" style="position: absolute; margin-left: 1%;">
+                    {#                {% else %}#}
+                    {#                    <img src="{% static 'image/default-team-logo-5.xcf' %}" style="position: absolute; margin-left: 1%;">#}
+                {% endif %}
+                <p style="margin-left: 10%;">{{ i.team_first }}</p>
+                {% if i.score_first %}
+                    <p style="margin-left: 30%;margin-top: -5%;">{{ i.score_first }}</p>
+                {% endif %}
+                {% if not i.image_second  == 'https://a.espncdn.com/i/teamlogos/soccer/500/default-team-logo-500.png' %}
+                    <img src="{{ i.image_second }}" style="position: absolute; margin-left: 1%;">
+                {% endif %}
+                <p style="margin-left: 10%;">{{ i.team_second }}</p>
+                {% if i.score_second %}
+                    <p style="margin-left: 30%; margin-top: -4%;">{{ i.score_second }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

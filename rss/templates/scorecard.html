@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>{{ page_title }}</title>
+{% endblock %}
+{% block styleBlock %}
+    <style>
+        .heading {
+            margin-left: 20%;
+            font-size: 200%;
+            background: #314569;
+            width: 60%;
+            text-align: center;
+            color: white;
+        }
+
+        .details {
+            width: 60%;
+            border: 1px solid #ccc !important;
+            margin-left: 20%;
+            margin-bottom: 2%;
+            border-radius: 4%;
+        }
+        p, h4 {
+            font-family: "Times New Roman", Times, serif;
+        }
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 80%;
+            margin-left: 10%;
+        }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #314569;
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="">
+        <div>
+            <p class="heading">Scorecard</p>
+        </div>
+    </div>
+    <div class="live_scorecard">
+        <div class="details">
+            <h4 style="color: red; margin-left: 5%; ">{{ date }}</h4>
+            <p style=" margin-left: 5%;">{{ title }}</p>
+            <p style=" margin-left: 5%;">{{ note }}</p>
+            {% for i in teams %}
+                <img src="{{ i.image }}" style="position: absolute; margin-left: 1%;     ">
+
+                <h4 style="margin-left: 9%; margin-top: 2%;">{{ i.team_name }}</h4>
+                {#                <p style="position: absolute;margin-left: 20%; margin-top: -3%;">{{ i.score }}</p>#}
+                {#                        <h4>{{ i.over }}</h4>#}
+            {% endfor %}
+            {% for f in data.totals %}
+                {% if forloop.counter == 1 %}
+                    <p></p>
+                {% else %}
+                    <p style="margin-left: 20%;margin-top: -7%;position: absolute;">{{ f }}</p>
+                {% endif %}
+            {% endfor %}
+            {% for f in data.total_second %}
+                {% if forloop.counter == 1 %}
+                    <p></p>
+                {% else %}
+                    <p style="margin-left: 20%;margin-top: -3%;position: absolute;">{{ f }}</p>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+        <div class="details">
+            {% for i in teams %}
+                {% if forloop.counter == 1 %}
+                    <h4 style="color: red; margin-left: 5%;">{{ i.team_name }} First Inning</h4>
+                {% endif %}
+            {% endfor %}
+            <div class="bating_first" style="    margin-top: 3%; margin-bottom: 5%;">
+                {% if data.batsmen_first %}
+                    <table id="customers">
+                        <tr>
+                            <th>BATSMEN</th>
+                            <th>Out By</th>
+                            <th>R</th>
+                            <th>B</th>
+                            <th>4s</th>
+                            <th>6s</th>
+                            <th>SR</th>
+                        </tr>
+                        {% for i in data.batsmen_first %}
+                            <tr>
+                                {% if i.batmans_name %}
+                                    <td>{{ i.batmans_name }}</td>
+                                    <td>{{ i.commentary }}</td>
+                                    {% for rec in i.runs %}
+                                        {% if forloop.counter == 6 %}
+
+                                        {% else %}
+                                            <td>{{ rec }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <p style="margin-left: 5%;">{{ data.list_bat|join:"  " }}</p>
+                    {% for f in data.totals %}
+                        {% if forloop.counter == 1 %}
+                            <p></p>
+                        {% else %}
+                            <p style="margin-left: 5%;">Total :{{ f }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for f in data.last_wick %}
+                        {% if forloop.counter == 1 %}
+                            <p></p>
+                        {% elif forloop.counter == 2 %}
+                            <p style="margin-left: 5%;">Fall of wickets :{{ f }}</p>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="table_bowlind_first" style="margin-top: 5%; margin-bottom: 5%;">
+                {% if data.bowling_first %}
+                    <table id="customers">
+                        <tr>
+                            <th>BOWLING</th>
+                            <th>O</th>
+                            <th>M</th>
+                            <th>R</th>
+                            <th>w</th>
+                            <th>ECON</th>
+                            <th>0s</th>
+                            <th>4s</th>
+                            <th>6s</th>
+                            <th>WD</th>
+                            <th>NB</th>
+                        </tr>
+                        {% for i in data.bowling_first %}
+                            <tr>
+                                {% for rec in i %}
+                                    <td>{{ rec }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            </div>
+            <div class="second_inning">
+                {% if data.batsmen_second %}
+                    {% for i in teams %}
+                        {% if forloop.counter == 2 %}
+                            <h4 style="color: red; margin-left: 5%;">{{ i.team_name }} Second Inning</h4>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="second_inning_bat" style="margin-bottom: 5%; margin-top: 3%">
+                        <table id="customers">
+                            <tr>
+                                <th>BATSMEN</th>
+                                <th>Out By</th>
+                                <th>R</th>
+                                <th>B</th>
+
+                                <th>4s</th>
+                                <th>6s</th>
+                                <th>SR</th>
+                            </tr>
+                            {% for i in data.batsmen_second %}
+                                <tr>
+                                    {% if i.batmans_name %}
+                                        <td>{{ i.batmans_name }}</td>
+                                        <td>{{ i.commentary }}</td>
+                                        {% for rec in i.runs %}
+                                            {% if forloop.counter == 6 %}
+
+                                            {% else %}
+                                                <td>{{ rec }}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <p style="margin-left: 5%;">{{ data.list_bat_sec|join:"  " }}</p>
+                    {% for f in data.total_second %}
+                        {% if forloop.counter == 1 %}
+                            <p></p>
+                        {% else %}
+                            <p style="margin-left: 5%;">Total :{{ f }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for f in data.last_wick_sec %}
+                        <p style="margin-left: 5%;">Fall of wickets :{{ f }}</p>
+                    {% endfor %}
+                {% endif %}
+                <div class="table_bowlind_second" style="margin-top: 5%; margin-bottom: 5%;">
+                    {% if data.bowling_second %}
+                        <table id="customers">
+                            <tr>
+                                <th>BOWLING</th>
+                                <th>O</th>
+                                <th>M</th>
+                                <th>R</th>
+                                <th>w</th>
+                                <th>ECON</th>
+                                <th>0s</th>
+                                <th>4s</th>
+                                <th>6s</th>
+                                <th>WD</th>
+                                <th>NB</th>
+                            </tr>
+                            {% for i in data.bowling_second %}
+                                <tr>
+                                    {% for rec in i %}
+                                        <td>{{ rec }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

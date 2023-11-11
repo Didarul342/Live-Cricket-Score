@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block styleBlock %}
+    <style>
+        .heading {
+            margin-left: 25%;
+            font-size: 200%;
+            background: #314569;
+            width: 50%;
+            text-align: center;
+            color: white;
+        }
+
+        .details {
+            width: 60%;
+            border: 1px solid #ccc !important;
+            margin-left: 20%;
+            margin-bottom: 2%;
+            border-radius: 4%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="">
+        <div>
+            <p class="heading">Series / Tournaments</p>
+        </div>
+    </div>
+    <div class="details">
+        {% for i in data.final %}
+            <h4 style="color: red; margin-left: 5%;">International Tournaments</h4>
+            {% for r in i %}
+                <form id="myForm" action="{% url 'rss:match_details' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <a href="javascript:void(0)" id='tc_review-{{ forloop.parentloop.counter }}-{{ forloop.counter }}'
+                       class="fa-times1"
+                       style="text-decoration: none !important; margin-left: 8%; color: #314569;">{{ forloop.counter }}. {{ r.match }}</a><br>
+                    <input type="hidden" id="link_{{ forloop.parentloop.counter }}-{{ forloop.counter }}"
+                           name="link_{{ forloop.parentloop.counter }}-{{ forloop.counter }}"
+                           value="{{ r.match_link }}">
+                    <input type="hidden" id="link_id" name="link" value="{{ r.match_link }}">
+                </form>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block ScriptBlock %}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '.fa-times1', function (e) {
+                var image_id = event.srcElement.id.split('-')[1];
+                var image_id1 = event.srcElement.id.split('-')[2];
+                var link = $("#link_" + image_id + '-' + image_id1).val();
+                $("#link_id").val(link);
+                document.getElementById('myForm').submit();
+                {#$.post('/info/', {#}
+                {#    'link': link,#}
+                {#    'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),#}
+                {#, function (data) {#}
+                {#    var response = data['message'];#}
+                {#);#}
+
+            });
+        });
+    </script>
+{% endblock %}
